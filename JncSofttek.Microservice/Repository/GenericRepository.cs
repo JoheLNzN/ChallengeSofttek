@@ -1,4 +1,5 @@
-﻿using JncSofttek.Microservice.DataAccess;
+﻿using AutoMapper;
+using JncSofttek.Microservice.DataAccess;
 
 namespace JncSofttek.Microservice.Repository
 {

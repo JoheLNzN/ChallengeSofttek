@@ -1,4 +1,5 @@
 ﻿using JncSofttek.Microservice.DataAccess.Models;
+using JncSofttek.Microservice.Repository.Repositories.Dtos.User;
 
 namespace JncSofttek.Microservice.Repository.Repositories.Interfaces
 {

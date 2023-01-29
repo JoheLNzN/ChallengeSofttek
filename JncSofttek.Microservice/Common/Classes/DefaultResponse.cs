@@ -1,4 +1,6 @@
-﻿namespace JncSofttek.Microservice.Common.Classes
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+
+namespace JncSofttek.Microservice.Common.Classes
 {
     public class DefaultResponse<T> where T : class
     {

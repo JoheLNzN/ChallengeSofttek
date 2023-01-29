@@ -1,9 +1,13 @@
-﻿using JncSofttek.Microservice.Common.Classes;
+﻿using AutoMapper;
+using JncSofttek.Microservice.Common;
+using JncSofttek.Microservice.Common.Classes;
 using JncSofttek.Microservice.DataAccess.Models;
+using JncSofttek.Microservice.Repository.Repositories.Dtos.User;
 using JncSofttek.Microservice.Repository.Repositories.Interfaces;
+using JncSofttek.Microservice.Util.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace JncSofttek.Microservice.Controllers
 {
@@ -11,15 +15,70 @@ namespace JncSofttek.Microservice.Controllers
     [ApiController]
     public class AccountController : MyBaseController
     {
-        public AccountController(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        private readonly IHelperToken _token;
+        public AccountController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IHelperToken token,
+            ILogger<MyBaseController> logger) :
+            base(unitOfWork, mapper, logger) => _token = token;
 
         [HttpGet]
         [AllowAnonymous]
         [Route("getAll")]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _unitOfWork.UserRepository.GetAllAsync();
-            return Ok(new DefaultResponse<List<User>>(true, result: users));
+            try
+            {
+                var users = await _unitOfWork.UserRepository.GetAllAsync();
+                return Ok(new DefaultResponse<List<UserDto>>(
+                    true, result: _mapper.Map<List<UserDto>>(users))
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{typeof(AccountController)} | GetAll() ::: {ex.Message}");
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new DefaultResponse<List<UserDto>>(true,
+                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
+            }
+        }
+
+        [HttpPost]
+        [Route("authenticate")]
+        public async Task<IActionResult> Authenticate(AuthenticateInputDto input)
+        {
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetByEmailAddressAndPasswordAsync(
+                    input.EmailAddress, input.Password
+                );
+
+                if (user == null) return BadRequest(new DefaultResponse<AuthenticateResponseDto>(
+                    false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST));
+
+                var userDto = _mapper.Map<UserDto>(user);
+
+                var token = _token.GenerateTokenJWTByUserInfo(_mapper.Map<UserDto>(userDto));
+
+                if (string.IsNullOrEmpty(token)) throw new Exception(AppConsts.EXCEPTION_TOKEN_INVALID);
+
+                return Ok(new DefaultResponse<AuthenticateResponseDto>(true,
+                          new AuthenticateResponseDto()
+                          {
+                              Role = userDto.Role,
+                              Token = token
+                          }));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{typeof(AccountController)} | GetAll() ::: {ex.Message}");
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new DefaultResponse<List<UserDto>>(true,
+                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
+            }
         }
     }
 }

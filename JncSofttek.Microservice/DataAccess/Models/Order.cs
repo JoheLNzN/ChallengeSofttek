@@ -11,6 +11,9 @@ namespace JncSofttek.Microservice.DataAccess.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        [Column(TypeName = OrderConsts.KeyType)]
+        public string Key { get; set; }
+
         public long ArticleId { get; set; }
 
         public long UserId { get; set; }

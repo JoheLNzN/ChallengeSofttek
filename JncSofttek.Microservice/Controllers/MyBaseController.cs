@@ -1,4 +1,5 @@
-﻿using JncSofttek.Microservice.Repository.Repositories.Interfaces;
+﻿using AutoMapper;
+using JncSofttek.Microservice.Repository.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +9,17 @@ namespace JncSofttek.Microservice.Controllers
     public class MyBaseController : ControllerBase
     {
         public readonly IUnitOfWork _unitOfWork;
+        public readonly IMapper _mapper;
+        public readonly ILogger<MyBaseController> _logger;
 
         public MyBaseController(
-          IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+          IUnitOfWork unitOfWork,
+          IMapper mapper,
+          ILogger<MyBaseController> logger)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = logger;
+        }
     }
 }

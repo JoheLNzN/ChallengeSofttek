@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using JncSofttek.Microservice.DataAccess.Models.TableAttributes;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
-using JncSofttek.Microservice.DataAccess.Models.TableAttributes;
-using JncSofttek.Microservice.DataAccess.Models.ModelAttributes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JncSofttek.Microservice.DataAccess.Models
 {
