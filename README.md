@@ -15,3 +15,10 @@ Signal-r...........: 7.0.2
 
 # Back-end
 C Sharp (C#).......: Net7
+
+```
+
+## :checkered_flag: Desplegando en Docker ##
+
+![ScreenShot](https://i.postimg.cc/pdVH6RRQ/Api-docker.png)
+
