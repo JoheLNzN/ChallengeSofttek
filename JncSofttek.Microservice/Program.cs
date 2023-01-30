@@ -11,6 +11,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string DefaultCorsPolicyName = "localhost";
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +47,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     };
                 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(DefaultCorsPolicyName, config =>
+    {
+        config
+        .WithOrigins(builder.Configuration.GetValue<string>("CorsOrigins")
+                .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                .Select(o => o.TrimEnd('/'))
+                .ToArray())
+        .SetIsOriginAllowedToAllowWildcardSubdomains()
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -56,6 +73,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors(DefaultCorsPolicyName);
 
 app.UseAuthentication();
 

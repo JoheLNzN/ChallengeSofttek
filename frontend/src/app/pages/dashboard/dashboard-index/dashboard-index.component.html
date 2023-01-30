@@ -1,0 +1,111 @@
+<div class="c-dashboard">
+  <div class="c-header">
+    <h1>Monitoreo de Ventas</h1>
+    <div class="c-actions">
+      <button type="button" class="btn btn-default noclick">
+        <span class="material-symbols-outlined">settings</span>Customize
+      </button>
+      <button type="button" class="btn btn-primary" (click)="goCreateArticle()">
+        <span class="material-symbols-outlined">add</span>Nuevo producto
+      </button>
+    </div>
+  </div>
+  <div class="c-body">
+    <div class="c-cards">
+      <div class="card">
+        <span class="menu material-symbols-outlined">more_vert</span>
+        <div class="card-header">
+          <span class="material-symbols-outlined">savings</span>
+          Ventas •<b>Año 2023</b>
+        </div>
+        <div class="card-body">
+          <span class="color1">S/. 0.00</span>
+          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="menu material-symbols-outlined">more_vert</span>
+        <div class="card-header">
+          <span class="material-symbols-outlined">savings</span>
+          Órdenes •<b>Año 2023</b>
+        </div>
+        <div class="card-body">
+          <span class="color2">0 uds.</span>
+          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="menu material-symbols-outlined">more_vert</span>
+        <div class="card-header">
+          <span class="material-symbols-outlined">savings</span>
+          Artículos vendidos
+        </div>
+        <div class="card-body">
+          <span class="color3">0</span>
+          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="menu material-symbols-outlined">more_vert</span>
+        <div class="card-header">
+          <span class="material-symbols-outlined">savings</span>
+          Artículos sin stock
+        </div>
+        <div class="card-body">
+          <span class="color4">$566.2k</span>
+          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      En esta pantalla se visualiza las ventas en tiempo real utilizando
+      <b>SignalR</b>.<br />
+      Además, los únicos elementos que realizan una determinada acción es
+      <b>[ Cerrar sesión ]</b> y <b>[ + Nuevo producto ]</b>.
+    </div>
+
+    <div class="c-articles">
+      <h1>
+        Mis artículos <b>( {{ articles.length }} )</b>
+      </h1>
+      <div class="c-table">
+        <table>
+          <caption></caption>
+          <thead>
+            <th></th>
+            <th>Sku | Nombre</th>
+            <th>Creación</th>
+            <th>Precio</th>
+            <th>Stock</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let article of articles">
+              <td>
+                <span class="icon material-symbols-outlined"
+                  >sticky_note_2</span
+                >
+              </td>
+              <td>
+                <div class="c-article-info">
+                  <span>{{ article.sku }}</span>
+                  <span>{{ article.name }}</span>
+                </div>
+              </td>
+              <td>{{ article.creationTime | date : "dd/MM/yyyy, h:mm:ss a" }}</td>
+              <td>S/. {{ article.price | number : "1.2-2" }}</td>
+              <td>
+                <span [ngClass]="{ nostock: article.stock === 0 }">{{
+                  article.stock === 0 ? "Sin Stock" : article.stock
+                }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

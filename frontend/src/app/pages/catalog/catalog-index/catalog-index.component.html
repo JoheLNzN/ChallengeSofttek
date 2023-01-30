@@ -1,0 +1,52 @@
+<div class="c-catalog">
+  <h1 class="page-title">
+    Tienda <b>( {{ articles.length }} )</b>
+  </h1>
+  <div class="c-table">
+    <table>
+      <caption></caption>
+      <thead>
+        <th></th>
+        <th>Sku | Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Venta</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of articles">
+          <td>
+            <span class="icon material-symbols-outlined">sticky_note_2</span>
+          </td>
+          <td>
+            <div class="c-article-info">
+              <span>{{ article.sku }}</span>
+              <span>{{ article.name }}</span>
+            </div>
+          </td>
+          <td>S/. {{ article.price | number : "1.2-2" }}</td>
+          <td>{{ article.stock }} uds.</td>
+          <td>
+            <div class="c-info">
+              <label>A pagar: <b>S/. 45.50</b></label>
+
+              <select [disabled]="busy">
+                <option>-- ¿Cantidad? --</option>
+                <option *ngFor="let stock of article.stockArray">
+                  {{ stock }} {{ stock > 1 ? "unidades" : "unidad" }}
+                </option>
+              </select>
+
+              <button #btnPay type="button" class="btn btn-primary" [disabled]="busy" (click)="buyArticle(btnPay, article)">
+                <span class="material-symbols-outlined">currency_exchange</span
+                >Pagar & Comprar
+              </button>
+            </div>
+            <!-- <div class="c-nostock">
+              Sin stock
+            </div> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

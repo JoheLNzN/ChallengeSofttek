@@ -1,0 +1,47 @@
+<div class="c-login">
+  <div class="c-login-column1">
+    <form [formGroup]="frmLogin" (submit)="authenticate()">
+      <h1 class="page-title">Iniciar sesión</h1>
+
+      <div class="c-form">
+        <label>Correo electrónico:</label>
+        <input
+          #emailAddress
+          type="text"
+          id="txtEmailAddress"
+          maxlength="20"
+          placeholder="Ingrese su e-mail"
+          autocomplete="off"
+          formControlName="formEmailAddress"
+        />
+      </div>
+
+      <div class="c-form">
+        <label>Contraseña:</label>
+        <input
+          #password
+          type="password"
+          id="txtPassword"
+          maxlength="10"
+          placeholder="Ingrese su contraseña"
+          formControlName="formPassword"
+        />
+      </div>
+
+      <div class="c-form">
+        <button #btnLogin type="submit" class="btn btn-primary" [disabled]="frmLogin.invalid || busy">
+          <span class="material-symbols-outlined">input</span>{{ busy ? 'Ingresando...' : 'Ingresar'}}
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="c-login-column2">
+    <p>Iniciando sesión como:</p>
+    <h3>{{ isCustomer ? "Cliente" : "Administrador" }}</h3>
+
+    <label class="switch">
+      <input type="checkbox" (change)="changeRole()" [disabled]="busy"/>
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="c-create">
+  <h1 class="page-title">Crear artículo</h1>
+  <form [formGroup]="frmArticle" (submit)="create()">
+    <div class="c-form">
+      <label>Nombre:</label>
+      <input #name type="text" maxlength="40" placeholder="Ingrese el nombre del producto" formControlName="formName"/>
+    </div>
+
+    <div class="c-form">
+      <label>Precio unitario:</label>
+      <input #price type="number" min="1" placeholder="Valor mínimo: 1" formControlName="formPrice"/>
+    </div>
+
+    <div class="c-form">
+      <label>Stock</label>
+      <input #stock type="number" min="1" max="10" placeholder="Valor de 1 a 10." formControlName="formStock" />
+    </div>
+    <div class="c-form">
+      <button type="submit" class="btn btn-primary" [disabled]="frmArticle.invalid" (click)="create()">
+        <span class="material-symbols-outlined">add</span>Registrar
+      </button>
+    </div>
+  </form>
+</div>
+

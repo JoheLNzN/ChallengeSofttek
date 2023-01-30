@@ -1,0 +1,38 @@
+div.c-body {
+  width: 90%;
+  max-width: var(--width_max);
+  margin: 0 auto;
+  min-height: 100px;
+
+  div.c-role{
+    padding: 15px;
+    text-align: right;
+    background-color: #fff1ef;
+    border: 1px solid #fc523f;
+    border-right-width: 20px;
+    border-radius: 10px;
+    margin: 7px 0px;
+
+    span{
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 600;
+      color: #b62d1d;
+
+    }
+  }
+}
+
+span.admin{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 24px;
+  background-color: #ff5252;
+  color: white;
+}

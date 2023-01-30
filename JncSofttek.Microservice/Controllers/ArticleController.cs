@@ -17,14 +17,12 @@ namespace JncSofttek.Microservice.Controllers
     [ApiController]
     public class ArticleController : MyBaseController
     {
-        private readonly IHelperToken _token;
-
         public ArticleController(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IHelperToken token,
             ILogger<MyBaseController> logger) :
-            base(unitOfWork, mapper, logger) => _token = token;
+            base(unitOfWork, mapper, logger)
+        { }
 
         [HttpGet]
         [Route("getAll")]

@@ -17,7 +17,7 @@ namespace JncSofttek.Microservice.DataAccess.Models
         public string Name { get; set; }
 
         [Column(TypeName = ArticleConsts.PriceType)]
-        public decimal Precio { get; set; }
+        public decimal Price { get; set; }
 
         [Column(TypeName = ArticleConsts.StockType)]
         public int Stock { get; set; }

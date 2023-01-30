@@ -11,7 +11,7 @@ namespace JncSofttek.Microservice.Repository.Repositories.Dtos.Article
 
         [Required(ErrorMessage = AppConsts.VALIDATION_ERROR_REQUIRED)]
         [Range(1, (double)decimal.MaxValue, ErrorMessage = AppConsts.VALIDATION_ERROR_INVALID_RANGE_PRICE)]
-        public decimal Precio { get; set; }
+        public decimal Price { get; set; }
 
         [Required(ErrorMessage = AppConsts.VALIDATION_ERROR_REQUIRED)]
         [Range(1, 10, ErrorMessage = AppConsts.VALIDATION_ERROR_INVALID_RANGE_STOCK)]

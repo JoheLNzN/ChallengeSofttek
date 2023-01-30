@@ -1,0 +1,35 @@
+<div class="container">
+  <header>
+    <div class="header-inner">
+      <div class="c-logo">
+        <span>Softtek UI</span>
+      </div>
+      <div class="c-actions">
+        <nav>
+          <a class="noclick">Home</a>
+          <a class="noclick">Products</a>
+          <a class="noclick">Analytcs</a>
+        </nav>
+        <button type="button" class="btn btn-default noclick">
+          <span class="material-symbols-outlined">star</span>Upgrade now
+        </button>
+        <span class="action material-symbols-outlined" title="Cerrar sesión" (click)="logOut()">reply_all</span>
+        <span class="customer" title="Cliente">C</span>
+      </div>
+      <div class="c-action-mobile">
+        <span class="action material-symbols-outlined">menu</span>
+      </div>
+    </div>
+  </header>
+  <div class="c-body">
+      <div class="c-role">
+        <span>Cliente / Comprador</span>
+      </div>
+      <ul class="breadcrumb">
+        <li><a class="noclick">Products</a></li>
+        <li>All products</li>
+      </ul>
+      <router-outlet></router-outlet>
+    </div>
+</div>
+

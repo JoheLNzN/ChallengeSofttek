@@ -9,7 +9,7 @@ namespace JncSofttek.Microservice.Repository.Repositories.Dtos.Article
     {
         public string Sku { get; set; }
         public string Name { get; set; }
-        public decimal Precio { get; set; }
+        public decimal Price { get; set; }
         public int Stock { get; set; }
         public DateTime CreationTime { get; set; }
     }

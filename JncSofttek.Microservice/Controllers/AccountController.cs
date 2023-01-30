@@ -56,7 +56,7 @@ namespace JncSofttek.Microservice.Controllers
                 );
 
                 if (user == null) return BadRequest(new DefaultResponse<AuthenticateResponseDto>(
-                    false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST));
+                    false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST_INCORRECT_CREDENTIALS));
 
                 var userDto = _mapper.Map<UserDto>(user);
 
