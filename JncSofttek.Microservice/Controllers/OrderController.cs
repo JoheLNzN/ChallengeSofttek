@@ -79,7 +79,7 @@ namespace JncSofttek.Microservice.Controllers
                         false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST_ARTICLE_QUANTITY));
 
 
-                _unitOfWork.InitTransaction();
+                // _unitOfWork.InitTransaction();
 
                 decimal totalAmount = article.Price * input.Quantity;
 
@@ -93,9 +93,11 @@ namespace JncSofttek.Microservice.Controllers
                 });
 
                 article.Stock -= input.Quantity;
-                await _unitOfWork.articleRepository.UpdateAsync(article);
 
-                await _unitOfWork.SaveChangesAndCommitTransactionAsync();
+                await _unitOfWork.articleRepository.UpdateAsync(article);
+                await _unitOfWork.SaveChangesAsync();
+
+                //await _unitOfWork.SaveChangesAndCommitTransactionAsync();
 
                 return Ok(new DefaultResponse<IActionResult>(true));
             }

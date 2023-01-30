@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs';
 import { ArticleDto, ArticleService } from 'src/shared/services/article.service';
 import { DefaultResponse } from 'src/shared/services/shared.service';
+
+import { OrderCreateInputDto, OrderService } from './../../../../shared/services/order.service';
 
 @Component({
   selector: 'app-catalog-index',
@@ -14,7 +17,11 @@ export class CatalogIndexComponent implements OnInit {
   loading: boolean = true;
   busy: boolean = false;
 
-  constructor(private articleService: ArticleService) {}
+  constructor(
+    private articleService: ArticleService,
+    private orderService: OrderService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadArticles();
@@ -34,6 +41,9 @@ export class CatalogIndexComponent implements OnInit {
             this.articles = <ArticleDto[]>response.result;
             if (this.articles.length > 0) {
               this.articles.forEach((a) => {
+                a.quantityToBuy = 0;
+                a.amountToBuy = 0;
+
                 if (a.stock > 0) {
                   a.stockArray = [];
                   for (let i = 1; i <= a.stock; i++) a.stockArray.push(i);
@@ -46,11 +56,38 @@ export class CatalogIndexComponent implements OnInit {
       });
   }
 
-  buyArticle(btn: HTMLButtonElement, article: ArticleDto): void{
-    if(this.busy) return;
+  changeQuantity(article: ArticleDto): void {
+    article.amountToBuy = article.quantityToBuy * article.price;
+  }
+
+  buyArticle(btn: HTMLButtonElement, article: ArticleDto): void {
+    if (article.quantityToBuy < 1 || article.amountToBuy < 1) {
+      this.toastr.error('La cantidad de producto no es válido.', 'Éxito', {
+        positionClass: 'toast-bottom-right',
+      });
+      return;
+    }
+
+    if (this.busy) return;
     this.busy = true;
 
     btn.innerText = 'Realizando pago...';
-    btn.classList.add('btnPaying');
+    this.orderService
+      .create(new OrderCreateInputDto(article.sku, article.quantityToBuy))
+      .pipe(
+        finalize(() => {
+          this.busy = false;
+          btn.innerText = 'Pagar & Comprar';
+        })
+      )
+      .subscribe({
+        complete: () => {
+          this.loadArticles();
+          this.toastr.success('La compra se realizó correctamente.', 'Éxito', {
+            positionClass: 'toast-bottom-right',
+          });
+        },
+        error: (err) => console.error(err),
+      });
   }
 }

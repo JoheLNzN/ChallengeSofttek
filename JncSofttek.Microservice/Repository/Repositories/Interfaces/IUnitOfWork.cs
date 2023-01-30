@@ -6,6 +6,7 @@
         IArticleRepository articleRepository { get; }
         public IOrderRepository orderRepository { get; }
 
+        Task SaveChangesAsync();
         void InitTransaction();
         Task SaveChangesAndCommitTransactionAsync();
     }

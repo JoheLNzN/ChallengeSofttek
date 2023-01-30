@@ -35,6 +35,8 @@ namespace JncSofttek.Microservice.Repository
             _transaction = null;
         }
 
+        public async Task SaveChangesAsync() => await context.SaveChangesAsync();
+
         public void Dispose()
         {
             Dispose(true);

@@ -26,24 +26,24 @@
           <td>S/. {{ article.price | number : "1.2-2" }}</td>
           <td>{{ article.stock }} uds.</td>
           <td>
-            <div class="c-info">
-              <label>A pagar: <b>S/. 45.50</b></label>
+            <div class="c-info" *ngIf="article.stock > 0">
+              <label>A pagar: <b>S/. {{ article.amountToBuy | number : "1.2-2" }}</b></label>
 
-              <select [disabled]="busy">
-                <option>-- ¿Cantidad? --</option>
-                <option *ngFor="let stock of article.stockArray">
+              <select [disabled]="busy" [(ngModel)]="article.quantityToBuy" (change)="changeQuantity(article)">
+                <option selected value="0">-- ¿Cantidad? --</option>
+                <option *ngFor="let stock of article.stockArray" [value]="stock">
                   {{ stock }} {{ stock > 1 ? "unidades" : "unidad" }}
                 </option>
               </select>
 
-              <button #btnPay type="button" class="btn btn-primary" [disabled]="busy" (click)="buyArticle(btnPay, article)">
+              <button #btnPay type="button" class="btn btn-primary" [disabled]="busy || article.quantityToBuy < 1" (click)="buyArticle(btnPay, article)">
                 <span class="material-symbols-outlined">currency_exchange</span
                 >Pagar & Comprar
               </button>
             </div>
-            <!-- <div class="c-nostock">
+            <div class="c-nostock" *ngIf="article.stock == 0">
               Sin stock
-            </div> -->
+            </div>
           </td>
         </tr>
       </tbody>

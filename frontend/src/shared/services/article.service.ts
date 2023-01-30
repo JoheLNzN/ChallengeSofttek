@@ -62,6 +62,8 @@ export class ArticleDto {
   price: number;
   stock: number;
   stockArray: number[] = [];
+  quantityToBuy: number
+  amountToBuy: number
   creationTime: any;
 }
 

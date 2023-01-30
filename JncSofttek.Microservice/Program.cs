@@ -6,6 +6,7 @@ using JncSofttek.Microservice.Util.Helpers;
 using JncSofttek.Microservice.Util.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -18,9 +19,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<JncSofttekContext>(
-    opt => opt.UseInMemoryDatabase(databaseName: "DBSofttekMemory"),
-    ServiceLifetime.Scoped, ServiceLifetime.Scoped);
+builder.Services.AddDbContext<JncSofttekContext>(opt =>
+opt.UseInMemoryDatabase(databaseName: "DBSofttekMemory"),
+ServiceLifetime.Scoped, ServiceLifetime.Scoped);
+
+//_ = new DbContextOptionsBuilder<JncSofttekContext>()
+//       .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 
 builder.Services.AddSingleton<IHelperValidation, HelperValidation>();
 builder.Services.AddSingleton<IHelperToken, HelperToken>();
