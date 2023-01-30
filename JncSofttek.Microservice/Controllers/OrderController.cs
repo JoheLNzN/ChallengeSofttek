@@ -2,6 +2,7 @@
 using JncSofttek.Microservice.Common;
 using JncSofttek.Microservice.Common.Classes;
 using JncSofttek.Microservice.DataAccess.Models;
+using JncSofttek.Microservice.RealTime.Dtos;
 using JncSofttek.Microservice.Repository.Repositories.Dtos.Order;
 using JncSofttek.Microservice.Repository.Repositories.Interfaces;
 using JncSofttek.Microservice.Util.Helpers.Interfaces;
@@ -103,7 +104,51 @@ namespace JncSofttek.Microservice.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{typeof(ArticleController)} | CreateAsync() ::: {ex.Message}");
+                _logger.LogError($"{typeof(OrderController)} | CreateAsync() ::: {ex.Message}");
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new DefaultResponse<IActionResult>(true,
+                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los datos estadísticos del dashboard.
+        /// Lo agregamos aquí para evitar tener que crear otro 'Controller'
+        /// Para reportes es recomendable utilizar Stores Procedure o Transact SQL
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getDataDashboard")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDataDashboardAsync()
+        {
+            try
+            {
+                var orders = await _unitOfWork.orderRepository.GetAllAsync();
+                var countNoStock = await _unitOfWork.articleRepository.CountArticlesNoStockAsync();
+
+                decimal totalSales = 0;
+                int articlesSold = 0;
+
+                foreach (var order in orders)
+                {
+                    totalSales += order.Amount;
+                    articlesSold += order.Quantity;
+                }
+
+                return Ok(new DefaultResponse<SignalRDashboardResponseDto>(true,
+                    new SignalRDashboardResponseDto()
+                    {
+                        ArticlesSold = articlesSold,
+                        NoStockArticles = countNoStock,
+                        TotalOrders = orders.Count,
+                        TotalSales = totalSales
+                    }));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{typeof(OrderController)} | GetDataDashboardAsync() ::: {ex.Message}");
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
                     new DefaultResponse<IActionResult>(true,

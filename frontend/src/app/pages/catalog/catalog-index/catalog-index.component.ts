@@ -5,6 +5,7 @@ import { ArticleDto, ArticleService } from 'src/shared/services/article.service'
 import { DefaultResponse } from 'src/shared/services/shared.service';
 
 import { OrderCreateInputDto, OrderService } from './../../../../shared/services/order.service';
+import { DashBoardSignalrService } from './../../../../shared/services/signalr/dashboard.signalr.service';
 
 @Component({
   selector: 'app-catalog-index',
@@ -20,8 +21,11 @@ export class CatalogIndexComponent implements OnInit {
   constructor(
     private articleService: ArticleService,
     private orderService: OrderService,
+    private dashBoardSignalrService: DashBoardSignalrService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.dashBoardSignalrService.init();
+  }
 
   ngOnInit(): void {
     this.loadArticles();
@@ -82,6 +86,7 @@ export class CatalogIndexComponent implements OnInit {
       )
       .subscribe({
         complete: () => {
+          this.dashBoardSignalrService.soldArticle();
           this.loadArticles();
           this.toastr.success('La compra se realizó correctamente.', 'Éxito', {
             positionClass: 'toast-bottom-right',

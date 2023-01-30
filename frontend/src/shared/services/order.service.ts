@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { AppConsts } from '../AppConsts';
 import { LocalAuthStorageService } from './local/local-auth-storage.service';
+import { DefaultResponse } from './shared.service';
 
 @Injectable()
 export class OrderService {
@@ -13,6 +15,17 @@ export class OrderService {
     private authStorageService: LocalAuthStorageService
   ) {
     this.API_URL = AppConsts.backendBaseUrl;
+  }
+
+  getDashboard(): Observable<DefaultResponse> {
+    return this.http.get<DefaultResponse>(
+      `${this.API_URL}/api/orders/getDataDashboard`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+        }),
+      }
+    );
   }
 
   create(input: OrderCreateInputDto) {

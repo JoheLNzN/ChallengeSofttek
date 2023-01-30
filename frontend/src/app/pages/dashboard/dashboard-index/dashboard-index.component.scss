@@ -89,28 +89,8 @@ div.c-dashboard {
           display: flex;
           justify-content: space-between;
           align-items: center;
-
-          span:first-child {
-            font-size: 30px;
-            font-weight: 900;
-          }
-
-          span:last-child {
-            position: relative;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--color_primary);
-            background-color: #e9f1fb;
-            padding: 4px 9px 4px 28px;
-            border-radius: 10px;
-
-            i {
-              position: absolute;
-              top: 2px;
-              left: 5px;
-              font-size: 18px;
-            }
-          }
+          font-size: 30px;
+          font-weight: 900;
         }
       }
     }
@@ -128,7 +108,7 @@ div.c-dashboard {
         padding-left: 7px;
         border-left: 8px solid var(--color_black);
 
-        b{
+        b {
           color: var(--color_primary);
         }
       }
@@ -136,7 +116,7 @@ div.c-dashboard {
   }
 }
 
-span.nostock{
+span.nostock {
   background-color: #e74c3c;
   color: white;
   padding: 5px 10px;
@@ -145,19 +125,18 @@ span.nostock{
   border-radius: 8px;
 }
 
-span.color1{
+span.color1 {
   color: #009432;
 }
 
-span.color2{
-  color: #FC427B;
+span.color2 {
+  color: #fc427b;
 }
 
-span.color3{
+span.color3 {
   color: #3742fa;
 }
 
-span.color4{
+span.color4 {
   color: #be2edd;
 }
-

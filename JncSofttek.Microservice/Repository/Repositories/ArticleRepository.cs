@@ -15,6 +15,9 @@ namespace JncSofttek.Microservice.Repository.Repositories
         public async Task<List<Article>> GetAllAsync() =>
             await _context.Articles.OrderByDescending(a => a.CreationTime).ToListAsync();
 
+        public async Task<int> CountArticlesNoStockAsync() =>
+            await _context.Articles.CountAsync(a => a.Stock == 0);
+
         public async Task CreateAsync(Article input)
         {
             await _context.Articles.AddAsync(input);

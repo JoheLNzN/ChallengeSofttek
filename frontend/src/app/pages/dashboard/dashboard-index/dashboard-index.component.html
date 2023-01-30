@@ -19,8 +19,7 @@
           Ventas •<b>Año 2023</b>
         </div>
         <div class="card-body">
-          <span class="color1">S/. 0.00</span>
-          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+          <span class="color1">S/. {{ dashboard.totalSales | number : "1.2-2" }}</span>
         </div>
       </div>
 
@@ -31,8 +30,7 @@
           Órdenes •<b>Año 2023</b>
         </div>
         <div class="card-body">
-          <span class="color2">0 uds.</span>
-          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+          <span class="color2">{{ dashboard.totalOrders }} uds.</span>
         </div>
       </div>
 
@@ -43,8 +41,7 @@
           Artículos vendidos
         </div>
         <div class="card-body">
-          <span class="color3">0</span>
-          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+          <span class="color3">{{ dashboard.articlesSold }} uds.</span>
         </div>
       </div>
 
@@ -55,8 +52,7 @@
           Artículos sin stock
         </div>
         <div class="card-body">
-          <span class="color4">$566.2k</span>
-          <span><i class="material-symbols-outlined">vital_signs</i>7.4%</span>
+          <span class="color4">{{ dashboard.noStockArticles }}</span>
         </div>
       </div>
     </div>
