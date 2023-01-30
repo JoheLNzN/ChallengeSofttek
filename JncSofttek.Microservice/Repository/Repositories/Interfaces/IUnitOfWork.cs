@@ -4,5 +4,9 @@
     {
         IUserRepository userRepository { get; }
         IArticleRepository articleRepository { get; }
+        public IOrderRepository orderRepository { get; }
+
+        void InitTransaction();
+        Task SaveChangesAndCommitTransactionAsync();
     }
 }

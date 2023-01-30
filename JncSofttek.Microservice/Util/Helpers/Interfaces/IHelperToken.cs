@@ -5,5 +5,6 @@ namespace JncSofttek.Microservice.Util.Helpers.Interfaces
     public interface IHelperToken
     {
         string GenerateTokenJWTByUserInfo(UserDto user);
+        UserClaimDto ValidateAndGetDataFromToken(HttpRequest request);
     }
 }

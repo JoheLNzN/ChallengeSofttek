@@ -16,6 +16,9 @@ namespace JncSofttek.Microservice.Repository.Repositories
         public async Task<List<User>> GetAllAsync() =>
             await _context.Users.ToListAsync();
 
+        public async Task<User> GetByEmailAddress(string emailAddress) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+
         public async Task<User> GetByEmailAddressAndPasswordAsync(string emailAddress, string password) =>
             await _context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress &&
                                                           u.Password == password);

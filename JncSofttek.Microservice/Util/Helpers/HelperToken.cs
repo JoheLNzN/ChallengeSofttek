@@ -1,4 +1,6 @@
 ﻿using JncSofttek.Microservice.Common;
+using JncSofttek.Microservice.Common.Enums;
+using JncSofttek.Microservice.Controllers;
 using JncSofttek.Microservice.Repository.Repositories.Dtos.User;
 using JncSofttek.Microservice.Util.Helpers.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +13,15 @@ namespace JncSofttek.Microservice.Util.Helpers
     public class HelperToken : IHelperToken
     {
         private readonly IConfiguration _config;
-        public HelperToken(IConfiguration config) => _config = config;
+        private readonly ILogger<HelperToken> _logger;
+
+        public HelperToken(
+            IConfiguration config,
+            ILogger<HelperToken> logger)
+        {
+            _config = config;
+            _logger = logger;
+        }
 
         public string GenerateTokenJWTByUserInfo(UserDto user)
         {
@@ -35,6 +45,31 @@ namespace JncSofttek.Microservice.Util.Helpers
             );
             var _token = new JwtSecurityToken(_header, _payload);
             return new JwtSecurityTokenHandler().WriteToken(_token);
+        }
+
+        public UserClaimDto ValidateAndGetDataFromToken(HttpRequest request)
+        {
+            //try
+            //{
+            var token = request.Headers[AppConsts.HEADER_AUTHORIZATION]
+                               .FirstOrDefault()?.Split(" ")?.Last();
+
+            var jwt = new JwtSecurityToken(token);
+
+            var email = jwt.Claims.FirstOrDefault(c => c.Type == AppConsts.CLAIM_USER_EMAIL_ADDRESS);
+            var role = jwt.Claims.FirstOrDefault(c => c.Type == AppConsts.CLAIM_USER_ROLE);
+
+            return new UserClaimDto()
+            {
+                EmailAddress = email.Value,
+                Role = Enum.Parse<UserRoleType>(role.Value)
+            };
+
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"{typeof(HelperToken)} | ValidateAndGetDataFromToken() ::: {ex.Message}");
+            //    return null;
+            //}
         }
     }
 }

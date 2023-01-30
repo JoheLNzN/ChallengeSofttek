@@ -2,6 +2,8 @@
 {
     public static class AppConsts
     {
+        public const string HEADER_AUTHORIZATION = "Authorization";
+
         public const string CLAIM_USER_EMAIL_ADDRESS = "CLAIMEmailAddress";
         public const string CLAIM_USER_ROLE = "CLAIMRole";
 
@@ -15,6 +17,15 @@
             "Las credenciales de acceso son incorrectas";
         public const string STATUS_CODE_500_INTERNAL_SERVER_ERROR =
             "Lo sentimos, se produjo un error inesperado al realizar la solicitud, por favor inténtelo de nuevo más tarde";
+
+        public const string STATUS_CODE_404_NOT_FOUND_ARTICLE =
+          "No se encontró el artículo, por favor inténtelo de nuevo más tarde";
+        public const string STATUS_CODE_400_BAD_REQUEST_ARTICLE_QUANTITY =
+          "El 'Stock' no es válido, por favor inténtelo de nuevo más tarde";
+
+        public const string STATUS_CODE_404_NOT_FOUND_USER = "No se encontró al usuario.";
+        public const string STATUS_CODE_404_NOT_FOUND_USER_TOKEN =
+            "No tiene los suficientes permisos para realizar dicha acción";
 
         #endregion
 

@@ -20,6 +20,7 @@ namespace JncSofttek.Microservice.Controllers
         public ArticleController(
             IUnitOfWork unitOfWork,
             IMapper mapper,
+            IHelperToken token,
             ILogger<MyBaseController> logger) :
             base(unitOfWork, mapper, logger)
         { }

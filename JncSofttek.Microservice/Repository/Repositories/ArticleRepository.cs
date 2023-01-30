@@ -9,6 +9,9 @@ namespace JncSofttek.Microservice.Repository.Repositories
     {
         public ArticleRepository(JncSofttekContext context) : base(context) { }
 
+        public async Task<Article> GetBySkuAsync(string Sku) =>
+            await _context.Articles.FirstOrDefaultAsync(a => a.Sku == Sku);
+
         public async Task<List<Article>> GetAllAsync() =>
             await _context.Articles.OrderByDescending(a => a.CreationTime).ToListAsync();
 
@@ -17,5 +20,8 @@ namespace JncSofttek.Microservice.Repository.Repositories
             await _context.Articles.AddAsync(input);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Article input) =>
+            _context.Entry(input).State = EntityState.Modified;
     }
 }

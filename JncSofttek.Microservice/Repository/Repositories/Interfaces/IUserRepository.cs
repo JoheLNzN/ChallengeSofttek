@@ -5,6 +5,7 @@ namespace JncSofttek.Microservice.Repository.Repositories.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+        Task<User> GetByEmailAddress(string emailAddress);
         Task<User> GetByEmailAddressAndPasswordAsync(string emailAddress, string password);
     }
 }
