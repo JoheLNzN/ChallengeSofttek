@@ -1,0 +1,2 @@
+docker build -t imgsofttek .
+docker run --name consofttek -p 8000:80 imgsofttek 

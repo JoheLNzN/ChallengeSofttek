@@ -7,7 +7,6 @@ using JncSofttek.Microservice.Util.Helpers;
 using JncSofttek.Microservice.Util.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -80,7 +79,7 @@ await SeedData.AddDefaulDataAsync(context);
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors(DefaultCorsPolicyName);
 

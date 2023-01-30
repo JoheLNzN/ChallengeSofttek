@@ -1,4 +1,4 @@
 {
-  "backendBaseUrl": "https://localhost:7190",
+  "backendBaseUrl": "https://localhost:8000",
   "clientBaseUrl": "http://localhost:4200"
 }
