@@ -5,17 +5,19 @@ namespace JncSofttek.Microservice.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly JncSofttekContext _context;
+        private readonly JncSofttekContext context;
 
-        public IUserRepository UserRepository { get; }
+        public IUserRepository userRepository { get; }
+        public IArticleRepository articleRepository { get; }
 
         public UnitOfWork(
             JncSofttekContext context,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IArticleRepository articleRepository)
         {
-            _context = context;
-
-            UserRepository = userRepository;
+            this.context = context;
+            this.userRepository = userRepository;
+            this.articleRepository = articleRepository;
         }
 
         public void Dispose()
@@ -26,7 +28,7 @@ namespace JncSofttek.Microservice.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _context.Dispose();
+            if (disposing) context.Dispose();
         }
     }
 }

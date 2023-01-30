@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUserRepository UserRepository { get; }
+        IUserRepository userRepository { get; }
+        IArticleRepository articleRepository { get; }
     }
 }

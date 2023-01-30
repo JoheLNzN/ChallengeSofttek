@@ -23,6 +23,6 @@ namespace JncSofttek.Microservice.DataAccess.Models
         public int Stock { get; set; }
 
         [Column(TypeName = ArticleConsts.CreationTimeType)]
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTime { get; set; } = DateTime.Now;
     }
 }

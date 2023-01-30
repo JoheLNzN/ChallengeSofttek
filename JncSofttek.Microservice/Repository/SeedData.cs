@@ -25,7 +25,57 @@ namespace JncSofttek.Microservice.Repository
                 }
             };
 
+
+            var articles = new List<Article>()
+            {
+                new Article{
+                    Id = 1,
+                    Name = "POLO VERDE - VERANO 2023",
+                    Sku = "6c5a8b94-f77d-4a64-ac23-c4113777b838",
+                    Precio = 58.99M,
+                    Stock = 10
+                },
+
+                new Article{
+                    Id = 2,
+                    Name = "POLO ROJO - VERANO 2023",
+                    Sku = "2da777c0-962c-4f9a-944c-1350e3586ca8",
+                    Precio = 78.00M,
+                    Stock = 10
+                },
+
+                 new Article{
+                    Id = 3,
+                    Name = "POLO AZUL - VERANO 2023",
+                    Sku = "40c9b8b7-647d-4a7b-bf1b-e1f3128709c0",
+                    Precio = 74.20M,
+                    Stock = 10
+                },
+                  new Article{
+                    Id = 4,
+                    Name = "POLO MORADO - VERANO 2023",
+                    Sku = "9afc9d40-6a4a-4648-a930-040ade09c688",
+                    Precio = 55M,
+                    Stock = 10
+                },
+                  new Article{
+                    Id = 5,
+                    Name = "POLO AMARILLO - VERANO 2023",
+                    Sku = "18dd2068-d98b-477b-af8c-73a8b46d573e",
+                    Precio = 32.32M,
+                    Stock = 10
+                },
+                   new Article{
+                    Id = 6,
+                    Name = "POLO NEGRO - VERANO 2023",
+                    Sku = "5d052be9-5abc-4d0d-ae7e-5cbe2ca483b5",
+                    Precio = 100.00M,
+                    Stock = 10
+                }
+            };
+
             await context.Users.AddRangeAsync(users);
+            await context.Articles.AddRangeAsync(articles);
             await context.SaveChangesAsync();
         }
     }

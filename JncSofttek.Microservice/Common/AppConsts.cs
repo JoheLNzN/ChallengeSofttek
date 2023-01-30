@@ -24,6 +24,12 @@
         public const string VALIDATION_ERROR_INVALID_EMAIL = "El '{0}' tiene un formato inválido";
         public const string VALIDATION_ERROR_INVALID_LENGTH = "El campo '{0}' tiene una longitud inválida";
 
+        // Custom
+        public const string VALIDATION_ERROR_INVALID_RANGE_STOCK =
+            "El campo 'Stock' debe comprender entre el rango de 1 a 10";
+        public const string VALIDATION_ERROR_INVALID_RANGE_PRICE =
+            "El campo 'Price' debe tener un valor mayor a o igual a 1.";
+
         #endregion
     }
 }

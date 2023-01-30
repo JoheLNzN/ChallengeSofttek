@@ -26,18 +26,18 @@ namespace JncSofttek.Microservice.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("getAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             try
             {
-                var users = await _unitOfWork.UserRepository.GetAllAsync();
+                var users = await _unitOfWork.userRepository.GetAllAsync();
                 return Ok(new DefaultResponse<List<UserDto>>(
                     true, result: _mapper.Map<List<UserDto>>(users))
                 );
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{typeof(AccountController)} | GetAll() ::: {ex.Message}");
+                _logger.LogError($"{typeof(AccountController)} | GetAllAsync() ::: {ex.Message}");
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
                     new DefaultResponse<List<UserDto>>(true,
@@ -51,7 +51,7 @@ namespace JncSofttek.Microservice.Controllers
         {
             try
             {
-                var user = await _unitOfWork.UserRepository.GetByEmailAddressAndPasswordAsync(
+                var user = await _unitOfWork.userRepository.GetByEmailAddressAndPasswordAsync(
                     input.EmailAddress, input.Password
                 );
 
@@ -73,10 +73,10 @@ namespace JncSofttek.Microservice.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{typeof(AccountController)} | GetAll() ::: {ex.Message}");
+                _logger.LogError($"{typeof(AccountController)} | Authenticate() ::: {ex.Message}");
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
-                    new DefaultResponse<List<UserDto>>(true,
+                    new DefaultResponse<AuthenticateResponseDto>(true,
                     errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
             }
         }
