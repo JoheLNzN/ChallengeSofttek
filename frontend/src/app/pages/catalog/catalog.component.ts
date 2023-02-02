@@ -1,23 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LocalAuthStorageService } from './../../../shared/services/local/local-auth-storage.service';
+import { LocalStorageService } from '../../../shared/services/local/local-storage.service';
 
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss'],
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent{
+
   constructor(
-    private router: Router,
-    private localAuthStorageService: LocalAuthStorageService
+    private _router: Router,
+    private _localStorageService: LocalStorageService
   ) {}
 
-  ngOnInit(): void {}
-
   logOut(): void {
-    this.localAuthStorageService.logOut();
-    this.router.navigate(['account/login'], { replaceUrl: true });
+    this._localStorageService.logOut();
+    this._router.navigate(['account/login']);
   }
 }

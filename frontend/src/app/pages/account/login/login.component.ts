@@ -3,16 +3,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AppConsts } from 'src/shared/AppConsts';
-import {
-  AccountService,
-  AuthenticateInputDto,
-  AuthenticateResponseDto,
-  UserRoleType,
-} from 'src/shared/services/account.service';
-import { AuthStorage } from 'src/shared/services/local/local-auth-storage.service';
+import { AccountService, AuthenticateInputDto, AuthenticateResponseDto } from 'src/shared/services/account.service';
+import { AuthStorage } from 'src/shared/services/local/local-storage.service';
 import { DefaultResponse } from 'src/shared/services/shared.service';
 
-import { LocalAuthStorageService } from './../../../../shared/services/local/local-auth-storage.service';
+import { LocalStorageService } from '../../../../shared/services/local/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +30,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private router: Router,
     private accountService: AccountService,
-    private localAuthStorageService: LocalAuthStorageService
+    private _localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +44,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
         [Validators.required]
       ),
     });
+
+    let redirectTo =
+      this._localStorageService.verifyUserLoggedAndGetUrlRedirect();
+    if (redirectTo != null) this.router.navigate([redirectTo]);
   }
 
   ngAfterViewInit(): void {
@@ -98,17 +97,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
           if (response.isSuccess) {
             let data = <AuthenticateResponseDto>response.result;
 
-            this.localAuthStorageService.save(
-              new AuthStorage(
-                data.token,
-                data.role,
-                authenticateInputDto.emailAddress
-              )
+            this._localStorageService.save(
+              new AuthStorage(data.token, data.role, data.redirectTo)
             );
 
-            this.router.navigate([
-              data.role == UserRoleType.DEFAULT ? 'catalog' : 'dashboard',
-            ]);
+            this.router.navigate([data.redirectTo]);
           }
         },
         error: (err) => {

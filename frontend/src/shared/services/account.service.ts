@@ -45,6 +45,7 @@ export class AuthenticateInputDto {
 export class AuthenticateResponseDto {
   token: string;
   role: UserRoleType;
+  redirectTo: string
 }
 
 export enum UserRoleType {

@@ -6,5 +6,6 @@ namespace JncSofttek.Microservice.Repository.Repositories.Dtos.User
     {
         public string Token { get; set; }
         public UserRoleType Role { get; set; }
+        public string RedirectTo { get; set; }
     }
 }

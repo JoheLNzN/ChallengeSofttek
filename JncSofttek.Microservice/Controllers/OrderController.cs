@@ -24,30 +24,15 @@ namespace JncSofttek.Microservice.Controllers
            ILogger<MyBaseController> logger) :
            base(unitOfWork, mapper, logger) => _token = token;
 
-        /// <summary>
-        /// Muestra las órdenes realizadas, no requiere autenticación (Sólo para visualización)
-        /// </summary>
-        /// <returns>Status Code &/Or List<Order></returns>
         [HttpGet]
         [Route("getAll")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
-            try
-            {
-                var orders = await _unitOfWork.orderRepository.GetAllAsync();
-                return Ok(new DefaultResponse<List<OrderDto>>(
-                    true, result: _mapper.Map<List<OrderDto>>(orders))
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{typeof(OrderController)} | GetAllAsync() ::: {ex.Message}");
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new DefaultResponse<IActionResult>(true,
-                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
-            }
+            var orders = await _unitOfWork.orderRepository.GetAllAsync();
+            return Ok(new DefaultResponse<List<OrderDto>>(
+                true, result: _mapper.Map<List<OrderDto>>(orders))
+            );
         }
 
         [HttpPost]
@@ -55,62 +40,52 @@ namespace JncSofttek.Microservice.Controllers
         [Authorize]
         public async Task<IActionResult> CreateAsync(OrderCreateInputDto input)
         {
-            try
+            var userClaim = _token.ValidateAndGetDataFromToken(Request);
+
+            if (userClaim == null)
+                return NotFound(new DefaultResponse<IActionResult>(
+                    false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_USER_TOKEN));
+
+            var user = _unitOfWork.userRepository.GetByEmailAddress(userClaim.EmailAddress);
+
+            if (user == null)
+                return NotFound(new DefaultResponse<IActionResult>(
+                    false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_USER));
+
+            var article = await _unitOfWork.articleRepository.GetBySkuAsync(input.ArticleSku);
+
+            if (article == null)
+                return NotFound(new DefaultResponse<IActionResult>(
+                    false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_ARTICLE));
+
+            if (input.Quantity == 0 || input.Quantity > article.Stock)
+                return BadRequest(new DefaultResponse<IActionResult>(
+                    false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST_ARTICLE_QUANTITY));
+
+
+            // _unitOfWork.InitTransaction();
+
+            decimal totalAmount = article.Price * input.Quantity;
+
+            await _unitOfWork.orderRepository.CreateAsync(new Order()
             {
-                var userClaim = _token.ValidateAndGetDataFromToken(Request);
+                ArticleId = article.Id,
+                UserId = user.Id,
+                Amount = totalAmount,
+                Key = Guid.NewGuid().ToString(),
+                Quantity = input.Quantity,
+            });
 
-                if (userClaim == null)
-                    return NotFound(new DefaultResponse<IActionResult>(
-                        false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_USER_TOKEN));
+            article.Stock -= input.Quantity;
 
-                var user = _unitOfWork.userRepository.GetByEmailAddress(userClaim.EmailAddress);
+            await _unitOfWork.articleRepository.UpdateAsync(article);
+            await _unitOfWork.SaveChangesAsync();
 
-                if (user == null)
-                    return NotFound(new DefaultResponse<IActionResult>(
-                        false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_USER));
+            //await _unitOfWork.SaveChangesAndCommitTransactionAsync();
 
-                var article = await _unitOfWork.articleRepository.GetBySkuAsync(input.ArticleSku);
-
-                if (article == null)
-                    return NotFound(new DefaultResponse<IActionResult>(
-                        false, errorMessage: AppConsts.STATUS_CODE_404_NOT_FOUND_ARTICLE));
-
-                if (input.Quantity == 0 || input.Quantity > article.Stock)
-                    return BadRequest(new DefaultResponse<IActionResult>(
-                        false, errorMessage: AppConsts.STATUS_CODE_400_BAD_REQUEST_ARTICLE_QUANTITY));
-
-
-                // _unitOfWork.InitTransaction();
-
-                decimal totalAmount = article.Price * input.Quantity;
-
-                await _unitOfWork.orderRepository.CreateAsync(new Order()
-                {
-                    ArticleId = article.Id,
-                    UserId = user.Id,
-                    Amount = totalAmount,
-                    Key = Guid.NewGuid().ToString(),
-                    Quantity = input.Quantity,
-                });
-
-                article.Stock -= input.Quantity;
-
-                await _unitOfWork.articleRepository.UpdateAsync(article);
-                await _unitOfWork.SaveChangesAsync();
-
-                //await _unitOfWork.SaveChangesAndCommitTransactionAsync();
-
-                return Ok(new DefaultResponse<IActionResult>(true));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{typeof(OrderController)} | CreateAsync() ::: {ex.Message}");
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new DefaultResponse<IActionResult>(true,
-                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
-            }
+            return Ok(new DefaultResponse<IActionResult>(true));
         }
+
 
         /// <summary>
         /// Obtiene los datos estadísticos del dashboard.
@@ -123,37 +98,26 @@ namespace JncSofttek.Microservice.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetDataDashboardAsync()
         {
-            try
+            var orders = await _unitOfWork.orderRepository.GetAllAsync();
+            var countNoStock = await _unitOfWork.articleRepository.CountArticlesNoStockAsync();
+
+            decimal totalSales = 0;
+            int articlesSold = 0;
+
+            foreach (var order in orders)
             {
-                var orders = await _unitOfWork.orderRepository.GetAllAsync();
-                var countNoStock = await _unitOfWork.articleRepository.CountArticlesNoStockAsync();
+                totalSales += order.Amount;
+                articlesSold += order.Quantity;
+            }
 
-                decimal totalSales = 0;
-                int articlesSold = 0;
-
-                foreach (var order in orders)
+            return Ok(new DefaultResponse<SignalRDashboardResponseDto>(true,
+                new SignalRDashboardResponseDto()
                 {
-                    totalSales += order.Amount;
-                    articlesSold += order.Quantity;
-                }
-
-                return Ok(new DefaultResponse<SignalRDashboardResponseDto>(true,
-                    new SignalRDashboardResponseDto()
-                    {
-                        ArticlesSold = articlesSold,
-                        NoStockArticles = countNoStock,
-                        TotalOrders = orders.Count,
-                        TotalSales = totalSales
-                    }));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{typeof(OrderController)} | GetDataDashboardAsync() ::: {ex.Message}");
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new DefaultResponse<IActionResult>(true,
-                    errorMessage: AppConsts.STATUS_CODE_500_INTERNAL_SERVER_ERROR));
-            }
+                    ArticlesSold = articlesSold,
+                    NoStockArticles = countNoStock,
+                    TotalOrders = orders.Count,
+                    TotalSales = totalSales
+                }));
         }
     }
 }

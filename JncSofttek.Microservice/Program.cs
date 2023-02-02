@@ -5,6 +5,7 @@ using JncSofttek.Microservice.Repository.Repositories;
 using JncSofttek.Microservice.Repository.Repositories.Interfaces;
 using JncSofttek.Microservice.Util.Helpers;
 using JncSofttek.Microservice.Util.Helpers.Interfaces;
+using JncSofttek.Microservice.Util.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -88,6 +89,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapHub<DashboardHub>("/dashboardHub");
 

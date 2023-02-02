@@ -7,8 +7,8 @@ namespace JncSofttek.Microservice.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly JncSofttekContext context;
-        private IDbContextTransaction _transaction;
+        readonly JncSofttekContext context;
+        IDbContextTransaction _transaction;
 
         public IUserRepository userRepository { get; }
         public IArticleRepository articleRepository { get; }

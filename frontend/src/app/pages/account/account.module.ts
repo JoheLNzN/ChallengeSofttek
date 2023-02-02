@@ -16,8 +16,7 @@ import { LoginComponent } from './login/login.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    ServiceModule,
-  ],
-  exports: [],
+    ServiceModule
+  ]
 })
 export class AccountModule {}

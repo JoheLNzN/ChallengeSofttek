@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppConsts } from '../AppConsts';
-import { LocalAuthStorageService } from './local/local-auth-storage.service';
+import { LocalStorageService } from './local/local-storage.service';
 import { DefaultResponse } from './shared.service';
 
 @Injectable()
@@ -12,13 +12,15 @@ export class ArticleService {
 
   constructor(
     private http: HttpClient,
-    private authStorageService: LocalAuthStorageService
+    private localStorageService: LocalStorageService
   ) {
     this.API_URL = AppConsts.backendBaseUrl;
   }
 
   getAll(): Observable<DefaultResponse> {
-    let storage = this.authStorageService.get();
+    let storage = this.localStorageService.get();
+    console.log("getAll | article");
+    console.log(storage);
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
@@ -36,7 +38,7 @@ export class ArticleService {
   }
 
   create(input: ArticleCreateInputDto) {
-    let storage = this.authStorageService.get();
+    let storage = this.localStorageService.get();
 
     if (storage == null)
       throw new Error(

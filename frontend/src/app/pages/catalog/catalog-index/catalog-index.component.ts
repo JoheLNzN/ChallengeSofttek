@@ -56,7 +56,7 @@ export class CatalogIndexComponent implements OnInit {
             }
           }
         },
-        error: (err) => console.error(err),
+        error: (err) => console.error(err?.error?.errorMessage),
       });
   }
 
@@ -74,8 +74,8 @@ export class CatalogIndexComponent implements OnInit {
 
     if (this.busy) return;
     this.busy = true;
-
     btn.innerText = 'Realizando pago...';
+
     this.orderService
       .create(new OrderCreateInputDto(article.sku, article.quantityToBuy))
       .pipe(
@@ -92,7 +92,9 @@ export class CatalogIndexComponent implements OnInit {
             positionClass: 'toast-bottom-right',
           });
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err.error);
+        },
       });
   }
 }

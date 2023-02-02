@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { AppConsts } from '../AppConsts';
-import { LocalAuthStorageService } from './local/local-auth-storage.service';
+import { LocalStorageService } from './local/local-storage.service';
 import { DefaultResponse } from './shared.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class OrderService {
 
   constructor(
     private http: HttpClient,
-    private authStorageService: LocalAuthStorageService
+    private _localStorageService: LocalStorageService
   ) {
     this.API_URL = AppConsts.backendBaseUrl;
   }
@@ -28,13 +28,11 @@ export class OrderService {
     );
   }
 
-  create(input: OrderCreateInputDto) {
-    let storage = this.authStorageService.get();
+  create(input: OrderCreateInputDto) : Observable<any> {
+    let storage = this._localStorageService.get();
 
     if (storage == null)
-      throw new Error(
-        'Es necesario estar autenticado para realizar esta acción.'
-      );
+      return of(new Error('Es necesario estar autenticado para realizar esta acción.'));
 
     let _url: string = `${this.API_URL}/api/orders/create`;
 

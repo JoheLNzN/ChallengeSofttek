@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { ServiceModule } from 'src/shared/services/service.module';
 
 import { CatalogIndexComponent } from './catalog-index/catalog-index.component';
@@ -14,8 +15,10 @@ import { CatalogComponent } from './catalog.component';
     CatalogRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ServiceModule,
+    ServiceModule
   ],
-  providers: [],
+  providers:[
+    AuthGuard
+  ]
 })
 export class CatalogModule {}

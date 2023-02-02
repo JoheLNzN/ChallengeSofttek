@@ -15,11 +15,7 @@ namespace JncSofttek.Microservice.Controllers
         public MyBaseController(
           IUnitOfWork unitOfWork,
           IMapper mapper,
-          ILogger<MyBaseController> logger)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _logger = logger;
-        }
+          ILogger<MyBaseController> logger) =>
+            (_unitOfWork, _mapper, _logger) = (unitOfWork, mapper, logger);
     }
 }

@@ -3,7 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AccountService } from './account.service';
 import { ArticleService } from './article.service';
-import { LocalAuthStorageService } from './local/local-auth-storage.service';
+import { LocalStorageService } from './local/local-storage.service';
 import { OrderService } from './order.service';
 import { DashBoardSignalrService } from './signalr/dashboard.signalr.service';
 
@@ -13,7 +13,7 @@ import { DashBoardSignalrService } from './signalr/dashboard.signalr.service';
     AccountService,
     ArticleService,
     OrderService,
-    LocalAuthStorageService,
+    LocalStorageService,
     DashBoardSignalrService,
     {
       provide: APP_INITIALIZER,
