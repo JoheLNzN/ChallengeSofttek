@@ -36,7 +36,6 @@ export class DashboardIndexComponent implements OnInit {
     this.loadDashboard();
     this.dashboardSignalrService.$dashboardSubject.subscribe(
       (reponse: SignalRDashboardResponseDto) => {
-        console.log(reponse);
         this.dashboard = reponse;
         this.loadArticles();
       }
@@ -49,7 +48,7 @@ export class DashboardIndexComponent implements OnInit {
         if (response.isSuccess)
           this.dashboard = <SignalRDashboardResponseDto>response.result;
       },
-      error: (err) => console.error(err),
+      error: (err) => console.error(err?.error?.errorMessage),
     });
   }
 

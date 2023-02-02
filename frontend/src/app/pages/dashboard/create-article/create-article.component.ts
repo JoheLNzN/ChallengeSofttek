@@ -22,7 +22,7 @@ export class CreateArticleComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private router: Router,
     private articleService: ArticleService,
-    private toastr: ToastrService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class CreateArticleComponent implements OnInit, AfterViewInit {
             positionClass: 'toast-bottom-right',
           });
         },
-        error: (err) => console.error(err),
+        error: (err) => console.error(err?.error?.errorMessage),
       });
   }
 }

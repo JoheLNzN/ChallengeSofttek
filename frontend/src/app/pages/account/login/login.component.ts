@@ -104,9 +104,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             this.router.navigate([data.redirectTo]);
           }
         },
-        error: (err) => {
-          console.log(err);
-        },
+        error: (err) => console.error(err?.error?.errorMessage)
       });
   }
 }

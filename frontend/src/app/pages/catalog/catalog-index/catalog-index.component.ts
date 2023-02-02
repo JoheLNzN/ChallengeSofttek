@@ -92,9 +92,7 @@ export class CatalogIndexComponent implements OnInit {
             positionClass: 'toast-bottom-right',
           });
         },
-        error: (err) => {
-          console.error(err.error);
-        },
+        error: (err) => console.error(err?.error?.errorMessage)
       });
   }
 }
