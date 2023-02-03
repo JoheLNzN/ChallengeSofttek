@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+    conbackend:
+        build:
+            context: ./JncSofttek.Microservice
+            dockerfile: Dockerfile
+        ports:
+            - "8080:80"
+    confrontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - "4200:80"
+
