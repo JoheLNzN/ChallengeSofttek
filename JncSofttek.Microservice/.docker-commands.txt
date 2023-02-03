@@ -1,2 +1,5 @@
 docker build -t imgsofttek .
 docker run --name consofttek -p 8080:80 imgsofttek 
+
+// Usar imagen desde DockerHub
+docker run --name consofttek -p 8080:80 johelnzn/softtekapi:1.0

@@ -1,0 +1,2 @@
+docker build -t imgfrontend .
+docker run --name confrontend -p 4200:80 imgfrontend
